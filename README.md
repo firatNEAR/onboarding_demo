@@ -1,4 +1,4 @@
-# webauthn-skeleton
+# NEAR onboarding experience demo 
 
 This is a working skeleton of a Node.js/Koa application with passwordless NEAR account creation and sending NEAR to a master account on localnet.
 
