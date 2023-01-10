@@ -1,15 +1,15 @@
 # webauthn-skeleton
 
-This is a working skeleton of a Node.js/Koa application with passwordless login (Web Authentication API, WebAuthN, FIDO2).
+This is a working skeleton of a Node.js/Koa application with passwordless NEAR account creation and sending NEAR to a master account on localnet.
 
 Main version (Koa/fido2-lib) live at [https://56k.guru/webauthn](https://56k.guru/webauthn)
 Deno version (Deno/Opine/fido2-lib) live at [https://56k.guru/webauthn-deno](https://56k.guru/webauthn-deno)
 
 ## Features
 
-*  Tested with Windows Hello, Yubikey or Android lockscreen, more to come.
-*  Supports adding more than one authentication method to the same account.
-*  Supports transfering account to another device by a time limited one time link or QR-code.
+*  Create NEAR accounts using FIDO2 create flow
+*  Send a test transaction to the network through using 'Login' button on UI
+
 
 Using Koa and fido2-lib
 
@@ -54,22 +54,5 @@ cd ..
 
 ### 4. Open browser
 
-```https://localhost:3000```
+```https://localhost:3010```
 
-## Docker development build
-
-```docker build . --tag="hexagon/webauthn-skeleton"```
-
-```
-sudo docker run \
-  -d \
-  --restart=always \
-  -e WAS_ORIGIN="https://localhost:3000" \
-  -e WAS_RPID="localhost" \
-  -e WAS_BASE_URL="https://localhost:3000/" \
-  -e WAS_BASE_URL="https://localhost:3000/orlikethisifservedfromasuburl" \
-  -e WAS_RPNAME="WebAuthN Demo" \
-  -e WAS_MODE="development" \
-  -e WAS_PORT=3000 \
-  --name webauthndemo \
-  hexagon/webauthn-skeleton```
