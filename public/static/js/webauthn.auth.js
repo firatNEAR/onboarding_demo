@@ -12,7 +12,7 @@ let getMakeCredentialsChallenge = (formBody, additional) => {
 	})
 		.then((response) => response.json())
 		.then((response) => {
-			if(response.status !== "ok")
+			if (response.status !== "ok")
 				throw new Error(`Server responed with error. The message is: ${response.message}`);
 
 			return response;
@@ -30,7 +30,7 @@ let sendWebAuthnResponse = (body) => {
 	})
 		.then((response) => response.json())
 		.then((response) => {
-			if(response.status !== "ok")
+			if (response.status !== "ok")
 				throw new Error(`Server responed with error. The message is: ${response.message}`);
 
 			return response;
@@ -48,18 +48,18 @@ let getGetAssertionChallenge = (formBody) => {
 	})
 		.then((response) => response.json())
 		.then((response) => {
-			if(response.status !== "ok")
+			if (response.status !== "ok")
 				throw new Error(`Server responed with error. The message is: ${response.message}`);
 			return response;
 		});
 };
 
 /* Handle for register form submission */
-function register (username, additional) {
-    
+function register(username, additional) {
+
 	let name = username;
 
-	getMakeCredentialsChallenge({username, name}, additional)
+	getMakeCredentialsChallenge({ username, name }, additional)
 		.then((response) => {
 			let publicKey = preformatMakeCredReq(response);
 			return navigator.credentials.create({ publicKey });
@@ -67,20 +67,20 @@ function register (username, additional) {
 		.then((response) => {
 			let transports = response.response.getTransports ? response.response.getTransports() : undefined,
 				makeCredResponse = {
-				id: response.id,
-				rawId: base64.fromArrayBuffer(response.rawId,true),
-				transports: transports,
-				response: {
-					attestationObject: base64.fromArrayBuffer(response.response.attestationObject,true),
-					clientDataJSON: base64.fromArrayBuffer(response.response.clientDataJSON,true)
-				},
-				type: response.type
-			};
+					id: response.id,
+					rawId: base64.fromArrayBuffer(response.rawId, true),
+					transports: transports,
+					response: {
+						attestationObject: base64.fromArrayBuffer(response.response.attestationObject, true),
+						clientDataJSON: base64.fromArrayBuffer(response.response.clientDataJSON, true)
+					},
+					type: response.type
+				};
 			return sendWebAuthnResponse(makeCredResponse);
 		})
 		.then((response) => {
-			if(response.status === "ok") {
-				loadMainContainer();   
+			if (response.status === "ok") {
+				loadMainContainer();
 			} else {
 				alert(`Server responed with error. The message is: ${response.message}`);
 			}
@@ -90,21 +90,22 @@ function register (username, additional) {
 
 /* Handler for login form submission */
 function login(username) {
-	getGetAssertionChallenge({username})
+	getGetAssertionChallenge({ username })
 		.then((response) => {
 			let publicKey = preformatGetAssertReq(response);
-			return navigator.credentials.get( { publicKey } );
+			return navigator.credentials.get({ publicKey });
 		})
 		.then((response) => {
 			let getAssertionResponse = publicKeyCredentialToJSON(response);
 			return sendWebAuthnResponse(getAssertionResponse);
 		})
 		.then((response) => {
-			if(response.status === "ok") {
-				loadMainContainer();   
+			if (response.status === "ok") {
+				loadMainContainer();
 			} else {
 				alert(`Server responed with error. The message is: ${response.message}`);
 			}
 		})
 		.catch((error) => alert(error));
 }
+

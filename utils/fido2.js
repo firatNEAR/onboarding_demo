@@ -1,8 +1,8 @@
 const
-	base64       = require("@hexagon/base64");
+	base64 = require("@hexagon/base64");
 
 class Fido2 {
-	constructor() {}
+	constructor() { }
 	async init(rpId, rpName, rpIcon, timeout) {
 		const { Fido2Lib } = await import("fido2-lib");
 		this.f2l = new Fido2Lib({
@@ -10,12 +10,12 @@ class Fido2 {
 			rpId,
 			rpName,
 			challengeSize: 128,
-			attestation: "none",
-			cryptoParams: [-7, -257],
-			authenticatorAttachment: undefined, // ["platform", "cross-platform"]
-			authenticatorRequireResidentKey: false,
+			attestation: "direct",
+			cryptoParams: [-8, -7],
+			authenticatorAttachment: "platform", // ["platform", "cross-platform"]
+			authenticatorRequireResidentKey: true,
 			authenticatorUserVerification: "preferred"
-		});
+		})
 	}
 
 	async registration(username, displayName, id) {
@@ -47,6 +47,7 @@ class Fido2 {
 
 	async login() {
 		let assertionOptions = await this.f2l.assertionOptions();
+		assertionOptions.attestation = 'direct';
 		assertionOptions.challenge = base64.fromArrayBuffer(assertionOptions.challenge, true);
 		assertionOptions.status = "ok";
 		return assertionOptions;
