@@ -24,18 +24,18 @@ const credentialsPath = require("path").join(homedir, CREDENTIALS_DIR);
 const myKeyStoreFile = new keyStores.UnencryptedFileSystemKeyStore(credentialsPath);
 const myKeyStoreMemory = new keyStores.InMemoryKeyStore();
 const connectionConfigMemory = {
-	networkId: "local",
+	networkId: config.networkId,
 	keyStore: myKeyStoreMemory, // first create a key store 
 	nodeUrl: "http://0.0.0.0:3030",
 };
 
 const connectionConfigFile = {
-	networkId: "local",
+	networkId: config.networkId,
 	keyStore: myKeyStoreFile, // first create a key store 
 	nodeUrl: "http://0.0.0.0:3030",
 };
 
-const masterUser = "test.near"
+const masterUser = config.masterUser
 
 /**
  * Returns base64url encoded buffer of the given length
@@ -230,12 +230,12 @@ router.post("/response", async (ctx) => {
 
 		// adds the keyPair you created to keyStore
 
-		await myKeyStoreMemory.setKey("local", base64.toString(webauthnResp.response.userHandle), firstKeyPair);
+		await myKeyStoreMemory.setKey(config.networkId, base64.toString(webauthnResp.response.userHandle), firstKeyPair);
 		const nearConnection = await connect(connectionConfigMemory);
 		const account = await nearConnection.account(base64.toString(webauthnResp.response.userHandle));
 		const accessKeys = await account.getAccessKeys(); try {
 			const correctAccessKey = getCorrectAccessKey(accessKeys, firstKeyPair, secondKeyPair);
-			await myKeyStoreMemory.setKey("local", base64.toString(webauthnResp.response.userHandle), correctAccessKey);
+			await myKeyStoreMemory.setKey(config.networkId, base64.toString(webauthnResp.response.userHandle), correctAccessKey);
 			await account.sendMoney(
 				masterUser, // receiver account
 				"100000000000000" // amount in yoctoNEAR
@@ -244,7 +244,7 @@ router.post("/response", async (ctx) => {
 		} catch (e) {
 			return ctx.body = {
 				"status": "failed",
-				"message": "Can not authenticate signature!"
+				"message": e
 			}
 		}
 	}

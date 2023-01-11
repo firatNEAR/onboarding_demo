@@ -8,7 +8,9 @@ let config = {
 	"baseUrl": undefined, // Uses origin as default
 	"cookieMaxAge": 24 * 60 * 60 * 1000, // 24 hours
 	"challengeTimeoutMs": 90 * 1000, // 90 seconds
-	"loginTokenExpireSeconds": 60
+	"loginTokenExpireSeconds": 60,
+	"networkId": "local",
+	"masterUser": "test.near"
 };
 
 // Environment overrides (normally no need to touch this)
@@ -18,7 +20,8 @@ config.rpId = process.env.WAS_RPID || config.rpId;
 config.rpName = process.env.WAS_RPNAME || config.rpName;
 config.mode = process.env.WAS_MODE || config.mode;
 config.baseUrl = process.env.WAS_BASE_URL || config.baseUrl || config.origin;
-
+config.networkId = procoess.env.NETWORK_ID || config.networkId
+config.networkId == process.env.MASTER_USER || config.masterUser
 // Forced cleanup (normally no need to touch this)
 // - Remove trailing slash from origin and baseUrl
 config.baseUrl = config.baseUrl.substr(-1) === "/" ? config.baseUrl.slice(0, -1) : config.baseUrl;

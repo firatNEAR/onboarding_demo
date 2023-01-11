@@ -10,7 +10,7 @@ class Fido2 {
 			rpId,
 			rpName,
 			challengeSize: 128,
-			attestation: "direct",
+			attestation: "none",
 			cryptoParams: [-8, -7],
 			authenticatorAttachment: "platform", // ["platform", "cross-platform"]
 			authenticatorRequireResidentKey: true,
