@@ -20,7 +20,7 @@ config.rpId = process.env.WAS_RPID || config.rpId;
 config.rpName = process.env.WAS_RPNAME || config.rpName;
 config.mode = process.env.WAS_MODE || config.mode;
 config.baseUrl = process.env.WAS_BASE_URL || config.baseUrl || config.origin;
-config.networkId = procoess.env.NETWORK_ID || config.networkId
+config.networkId = process.env.NETWORK_ID || config.networkId
 config.networkId == process.env.MASTER_USER || config.masterUser
 // Forced cleanup (normally no need to touch this)
 // - Remove trailing slash from origin and baseUrl
